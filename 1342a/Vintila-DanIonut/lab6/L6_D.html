@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+<meta charset="UTF-8">
+<title>L6_D - Galerie</title>
+</head>
+<body>
+<img id="poza" src="Img/caini.jpg" width="400" alt="Galerie"><br>
+<p id="text"></p>
+<button id="inapoi">Înapoi</button>
+<button id="inainte">Înainte</button>
+
+<script>
+var imagini = ["Img/caini.jpg", "Img/mare.jpg", "Img/munti.jpg", "Img/pisici.jpg"];
+var poz = 0;
+
+function afiseaza() {
+    document.getElementById("poza").src = imagini[poz];
+    document.getElementById("text").innerHTML = "Imaginea " + (poz + 1) + " din " + imagini.length;
+}
+
+document.getElementById("inainte").onclick = function () {
+    poz = (poz + 1) % imagini.length;
+    afiseaza();
+};
+
+document.getElementById("inapoi").onclick = function () {
+    poz = (poz - 1 + imagini.length) % imagini.length;
+    afiseaza();
+};
+
+afiseaza();
+</script>
+</body>
+</html>
