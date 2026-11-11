@@ -1,0 +1,213 @@
+
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+    <meta charset="UTF-8">
+    <title>Masini - abordare "bruta"</title>
+
+    <script>
+
+    // "masina" JS - RAMANE NESCHIMBATA
+    function loadMjs(){
+        document.getElementById("mjs").innerHTML =
+        "<ul>"+
+        "<li>Tip: Dacia</li>" +
+        "<li>Model: Logan</li>" +
+        "<li>Culoare: verde</li>" +
+        "</ul>";
+    }
+
+
+    // "masina" LS
+    function loadMls(){
+        if(localStorage.tip){
+            var tL = localStorage.tip;
+        }
+        else{
+            document.getElementById("mls").innerHTML =
+            "Nicio masina salvata";
+            return;
+        }
+
+        if(localStorage.model){
+            var mL = localStorage.model;
+        }
+
+        if(localStorage.culoare){
+            var cL = localStorage.culoare;
+        }
+
+        document.getElementById("mls").innerHTML =
+        "<ul>"+
+        "<li>Tip: " + tL +"</li>" +
+        "<li>Model: "  + mL +"</li>" +
+        "<li>Culoare: "  + cL + "</li>" +
+        "</ul>";
+    }
+
+
+    // Salvare masina Local Storage
+    function salveazaMls(){
+
+        var tL = document.getElementById("tipL").value;
+        var mL = document.getElementById("modelL").value;
+        var cL = document.getElementById("culoareL").value;
+
+        localStorage.tip = tL;
+        localStorage.model = mL;
+        localStorage.culoare = cL;
+
+        loadMls();
+
+        return false;
+    }
+
+
+    // "masina" SS
+    function loadMss(){
+
+        if(sessionStorage.tip){
+            var tS = sessionStorage.tip;
+        }
+        else{
+            document.getElementById("mss").innerHTML =
+            "Nicio masina salvata";
+            return;
+        }
+
+        if(sessionStorage.model){
+            var mS = sessionStorage.model;
+        }
+
+        if(sessionStorage.culoare){
+            var cS = sessionStorage.culoare;
+        }
+
+        document.getElementById("mss").innerHTML =
+        "<ul>"+
+        "<li>Tip: " + tS +"</li>" +
+        "<li>Model: "  + mS +"</li>" +
+        "<li>Culoare: "  + cS + "</li>" +
+        "</ul>";
+    }
+
+
+    // Salvare masina Session Storage
+    function salveazaMss(){
+
+        var tS = document.getElementById("tipS").value;
+        var mS = document.getElementById("modelS").value;
+        var cS = document.getElementById("culoareS").value;
+
+        sessionStorage.tip = tS;
+        sessionStorage.model = mS;
+        sessionStorage.culoare = cS;
+
+        loadMss();
+
+        return false;
+    }
+
+
+    // Stergere masina Local Storage
+    function stergeMls(){
+
+        localStorage.removeItem("tip");
+        localStorage.removeItem("model");
+        localStorage.removeItem("culoare");
+
+        loadMls();
+    }
+
+
+    // Stergere masina Session Storage
+    function stergeMss(){
+
+        sessionStorage.removeItem("tip");
+        sessionStorage.removeItem("model");
+        sessionStorage.removeItem("culoare");
+
+        loadMss();
+    }
+
+
+    // Incarcare la deschiderea paginii
+    function incarcare(){
+
+        loadMjs();
+        loadMls();
+        loadMss();
+    }
+
+    </script>
+</head>
+
+
+<body onload="incarcare()">
+
+    <!-- MASINA JAVASCRIPT -->
+    <div style="background-color:LimeGreen;color:white;font-size:200%">
+        <p>Masina JavaScript</p>
+        <div id="mjs"></div>
+    </div>
+
+
+    <!-- MASINA LOCAL STORAGE -->
+    <div style="background-color:ForestGreen;color:white;font-size:200%;padding:10px">
+
+        <p>Masina Local Storage</p>
+
+        <form onsubmit="return salveazaMls()">
+
+            <label for="tipL">Tip</label>
+            <input id="tipL" required>
+
+            <label for="modelL">Model</label>
+            <input id="modelL" required>
+
+            <label for="culoareL">Culoare</label>
+            <input id="culoareL" required>
+
+            <button type="submit">Salveaza</button>
+
+            <button type="button" onclick="stergeMls()">Sterge</button>
+                
+            
+
+        </form>
+
+        <div id="mls"></div>
+
+    </div>
+
+
+    <!-- MASINA SESSION STORAGE -->
+    <div style="background-color:SeaGreen;color:white;font-size:200%;padding:10px">
+
+        <p>Masina Session Storage</p>
+
+        <form onsubmit="return salveazaMss()">
+
+            <label for="tipS">Tip</label>
+            <input id="tipS" required>
+
+            <label for="modelS">Model</label>
+            <input id="modelS" required>
+
+            <label for="culoareS">Culoare</label>
+            <input id="culoareS" required>
+
+            <button type="submit">Salveaza</button>
+
+            <button type="button" onclick="stergeMss()">
+                Sterge
+            </button>
+
+        </form>
+
+        <div id="mss"></div>
+
+    </div>
+
+</body>
+</html>
