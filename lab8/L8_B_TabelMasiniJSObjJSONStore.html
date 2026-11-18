@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+    <meta charset="UTF-8">
+    <title>Tabel masini JSON</title>
+
+    <style>
+        table {
+            font-family: arial, sans-serif;
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        td, th {
+            border: 1px solid #dddddd;
+            text-align: left;
+            padding: 8px;
+        }
+
+        input, button {
+            margin: 5px;
+            padding: 5px;
+        }
+
+        #mesaj {
+            color: red;
+        }
+    </style>
+</head>
+
+<body>
+
+<h1>Masinile dorite</h1>
+
+<form onsubmit="return adaugaMasina()">
+    <input id="marca" placeholder="Marca" required>
+    <input id="model" placeholder="Model" required>
+    <input id="culoare" placeholder="Culoare" required>
+    <input id="anFab" type="number" placeholder="An fabricatie" required>
+
+    <button type="submit">Adauga masina</button>
+</form>
+
+<p id="mesaj"></p>
+
+<table id="tm">
+    <tr>
+        <th>Marca</th>
+        <th>Model</th>
+        <th>Culoare</th>
+        <th>An fabricatie</th>
+    </tr>
+</table>
+
+<script>
+
+// Constructorul obiectului masina
+function masina(mk, md, cl, an) {
+    this.marca = mk;
+    this.model = md;
+    this.culoare = cl;
+    this.anFab = an;
+
+    this.randNou = function() {
+        return "<tr><td>" + this.marca +
+            "</td><td>" + this.model +
+            "</td><td>" + this.culoare +
+            "</td><td>" + this.anFab +
+            "</td></tr>";
+    };
+}
+
+// Masinile initiale
+var m1 = new masina("Opel", "Zafira", "gri", 2015);
+var m2 = new masina("Seat", "Ibiza", "roz", 2018);
+
+document.getElementById("tm").innerHTML += m1.randNou();
+document.getElementById("tm").innerHTML += m2.randNou();
+
+// Citirea obiectului JSON din Local Storage
+if (localStorage.masinaN) {
+
+    var masinaJSON = localStorage.masinaN;
+    var mNoua = JSON.parse(masinaJSON);
+
+    document.getElementById("tm").innerHTML += mNoua.randNou;
+}
+
+// Functia de validare
+function valideaza(marca, model, culoare, an) {
+
+    if (marca.trim() == "") {
+        return "Introduceti marca masinii!";
+    }
+
+    if (model.trim() == "") {
+        return "Introduceti modelul masinii!";
+    }
+
+    if (culoare.trim() == "") {
+        return "Introduceti culoarea masinii!";
+    }
+
+    var anNumar = Number(an);
+    var anCurent = new Date().getFullYear();
+
+    if (!Number.isInteger(anNumar) ||
+        anNumar < 1900 ||
+        anNumar > anCurent) {
+        return "Anul trebuie sa fie un numar intreg intre 1900 si " + anCurent + "!";
+    }
+
+    return "";
+}
+
+// Functia de adaugare
+function adaugaMasina() {
+
+    var marca = document.getElementById("marca").value.trim();
+    var model = document.getElementById("model").value.trim();
+    var culoare = document.getElementById("culoare").value.trim();
+    var an = document.getElementById("anFab").value;
+
+    var eroare = valideaza(marca, model, culoare, an);
+
+    if (eroare != "") {
+        document.getElementById("mesaj").innerHTML = eroare;
+        return false;
+    }
+
+    var mNoua = new masina(marca, model, culoare, Number(an));
+
+    document.getElementById("tm").innerHTML += mNoua.randNou();
+
+    // Transformarea metodei in text HTML
+    mNoua.randNou = mNoua.randNou().toString();
+
+    // Transformarea obiectului in JSON
+    var myJSON = JSON.stringify(mNoua);
+
+    // Salvarea in Local Storage
+    localStorage.setItem("masinaN", myJSON);
+
+    document.getElementById("mesaj").innerHTML = "";
+
+    document.getElementById("marca").value = "";
+    document.getElementById("model").value = "";
+    document.getElementById("culoare").value = "";
+    document.getElementById("anFab").value = "";
+
+    return false;
+}
+/*
+Exercitiul 4
+
+a) Cheia masinaN contine un sir de caractere in format JSON,
+care pastreaza marca, modelul, culoarea si randNou al masinii.
+
+b) Linia mNoua.randNou = mNoua.randNou().toString();
+inlocuieste metoda cu textul HTML returnat de aceasta.
+Fara aceasta linie, JSON.stringify() ar ignora functia randNou.
+
+c) La reincarcare se scrie mNoua.randNou fara paranteze,
+deoarece randNou este deja un text HTML, nu o functie.
+
+d) In L8_B apare o singura masina adaugata dupa reincarcare,
+deoarece localStorage pastreaza doar ultima masina salvata.
+La fel se intampla si in L8_A.
+*/
+</script>
+
+</body>
+</html>
+
+
+
+
+
+
